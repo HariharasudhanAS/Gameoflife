@@ -29,27 +29,23 @@ def display(matrix):
     img = np.array(matrix ,dtype=np.uint8)
     #img = cv2.resize(img, (996, 996))
     retval, img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY)
-    img = cv2.resize(img, (996, 996), interpolation=cv2.INTER_AREA )
+    img = cv2.resize(img, (900, 900), interpolation=cv2.INTER_AREA )
     #cv2.imshow('trial',img)
     #cv2.waitKey(0)
-    cv2.imwrite('/home/orange/gol/4/%s' %d + '.jpg',img)
+    cv2.imwrite('/home/orange/Desktop/4/%s' %d + '.jpg',img)
 
 def main():
     global d
-    matrix = [[0,0,0,0,0,0,0,0],
-              [0,0,1,0,0,1,0,0],
-              [0,1,0,1,0,0,1,0],
-              [0,0,0,0,1,0,1,0],
-              [0,0,1,1,1,0,0,0],
-              [0,0,0,1,0,0,0,0],
-              [0,0,1,0,0,1,0,0],
-              [0,0,0,0,0,0,0,0]]
-    for iteration in range(0,200):
-        for i in range(1,7):
-            for j in range(1,7):
+    matrix = np.zeros((50,50), dtype=bool)
+    seeds = np.random.random((10,10))
+    matrix[10:20, 5:15] = (seeds > 0.75)
+    matrix[30:40, 30:40] = (seeds > 0.75)
+    for iteration in range(0,250):
+        for i in range(1,48):
+            for j in range(1,48):
                 matrix[i][j]=rules(matrix,i,j)
         display(matrix)
         #print(matrix)
         d+=1
-    os.system("cd /home/orange/gol/4; ffmpeg -i %d.jpg -vcodec mpeg4 test.avi")
+    #os.system("cd /home/orange/gol/4; ffmpeg -i %d.jpg -vcodec mpeg4 test.avi")
 main()
